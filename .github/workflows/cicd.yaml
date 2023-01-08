@@ -4,7 +4,7 @@ env:
   AWS_REGION: us-west-2
   ECR_REPOSITORY: sandbox
   ECS_SERVICE: sample-app-service
-  ECS_CLUSTER: test
+  ECS_CLUSTER: default
   ECS_TASK_DEFINITION: .aws/first-run-task-definition.json
   CONTAINER_NAME: sample-app
 
