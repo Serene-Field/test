@@ -34,6 +34,7 @@ jobs:
       uses: aws-actions/amazon-ecr-login@v1
 
     - name: ⛴️ Docker build and push
+      id: build-image
       env:
         ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
         IMAGE_TAG: ${{ github.sha }}
@@ -53,7 +54,7 @@ jobs:
     - name: 🏁 Deploy by ECS task
       uses: aws-actions/amazon-ecs-deploy-task-definition@v1
       with:
-          task-definition: ${{ steps.task-def.outputs.task-definition }}
+          task-definition: ${{ steps.taskid.outputs.task-definition }}
           service: ${{ env.ECS_SERVICE }}
           cluster: ${{ env.ECS_CLUSTER }}
           wait-for-service-stability: true
