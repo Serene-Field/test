@@ -3,14 +3,15 @@ name: 🚀 CICD test
 env:
   AWS_REGION: us-west-2
   ECR_REPOSITORY: sandbox
-  ECS_SERVICE: sample-app-service
-  ECS_CLUSTER: default
-  ECS_TASK_DEFINITION: .aws/first-run-task-definition.json
-  CONTAINER_NAME: sample-app
+  ECS_SERVICE: node
+  ECS_CLUSTER: dev
+  ECS_TASK_DEFINITION: .aws/node.json
+  CONTAINER_NAME: node
 
 on:
   push:
-    branches: ["main"]
+    branches: 
+      - "*"
 
 jobs:
   deploy:
@@ -44,7 +45,7 @@ jobs:
         echo "image=$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG" >> $GITHUB_OUTPUT
 
     - name: 🎁 Use ECR Image for ECS task 
-      id: taskid
+      id: task-def
       uses: aws-actions/amazon-ecs-render-task-definition@v1
       with:
         task-definition: ${{ env.ECS_TASK_DEFINITION }}
@@ -54,7 +55,7 @@ jobs:
     - name: 🏁 Deploy by ECS task
       uses: aws-actions/amazon-ecs-deploy-task-definition@v1
       with:
-          task-definition: ${{ steps.taskid.outputs.task-definition }}
+          task-definition: ${{ steps.task-def.outputs.task-definition }}
           service: ${{ env.ECS_SERVICE }}
           cluster: ${{ env.ECS_CLUSTER }}
           wait-for-service-stability: true
