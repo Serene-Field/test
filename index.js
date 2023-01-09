@@ -5,8 +5,8 @@ const port = 80;
 
 const server = http.createServer((req, res) => {
   res.statusCode = 200;
-  res.setHeader('Content-Type', 'text/plain');
-  res.end('Hello, World!\n');
+  res.setHeader('Content-Type', 'text/html');
+  res.end('<!DOCTYPE html><html><p style="text-align:center;">Serene Field Deployment Testing <span style="color:MediumSeaGreen;"><br>SUCCESS</span></p><html>');
 });
 
 server.listen(port, hostname, () => {
